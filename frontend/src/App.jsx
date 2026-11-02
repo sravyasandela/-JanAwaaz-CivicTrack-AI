@@ -1,4 +1,4 @@
-
+﻿
 import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Auth from "./components/Auth";
@@ -26,7 +26,7 @@ import {
 
 import "./App.css";
 
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = "https://janawaaz-api-jlnx.onrender.com";
 
 function App() {
   const { i18n } = useTranslation();
@@ -603,7 +603,7 @@ function App() {
                         background: isCompleted ? "#16a34a" : "#cbd5e1",
                       }}
                     >
-                      {isCompleted ? "✓" : index + 1}
+                      {isCompleted ? "âœ“" : index + 1}
                     </div>
 
                     {index !== steps.length - 1 && (
@@ -739,7 +739,7 @@ function App() {
     <div className="app">
       <div className="top-strip">
         <span>Government Services | Public Grievance Platform</span>
-        <span>Citizen-first • Transparent • Accountable</span>
+        <span>Citizen-first â€¢ Transparent â€¢ Accountable</span>
       </div>
 
       <header className="navbar">
@@ -776,13 +776,13 @@ function App() {
 
             <select value={i18n.language} onChange={changeLanguage}>
               <option value="en">English</option>
-              <option value="hi">हिन्दी</option>
-              <option value="te">తెలుగు</option>
-              <option value="bn">বাংলা</option>
-              <option value="ta">தமிழ்</option>
-              <option value="kn">ಕನ್ನಡ</option>
-              <option value="ml">മലയാളം</option>
-              <option value="mr">मराठी</option>
+              <option value="hi">à¤¹à¤¿à¤¨à¥à¤¦à¥€</option>
+              <option value="te">à°¤à±†à°²à±à°—à±</option>
+              <option value="bn">à¦¬à¦¾à¦‚à¦²à¦¾</option>
+              <option value="ta">à®¤à®®à®¿à®´à¯</option>
+              <option value="kn">à²•à²¨à³à²¨à²¡</option>
+              <option value="ml">à´®à´²à´¯à´¾à´³à´‚</option>
+              <option value="mr">à¤®à¤°à¤¾à¤ à¥€</option>
             </select>
           </div>
 
@@ -1382,7 +1382,7 @@ function App() {
         </div>
 
         <div className="footer-bottom">
-          <span>JanAwaaz – CivicTrack AI</span>
+          <span>JanAwaaz â€“ CivicTrack AI</span>
           <span>Project prototype | Not an official government website</span>
         </div>
       </footer>
@@ -1620,3 +1620,4 @@ const currentStatusStyle = {
 };
 
 export default App;
+
