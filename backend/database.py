@@ -9,25 +9,30 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 
 load_dotenv(Path(__file__).resolve().parent / ".env")
 
-# Use cloud database URL when deployed.
+# Cloud database connection on Render
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-# Otherwise use your existing local PostgreSQL database.
-if not DATABASE_URL:
+if DATABASE_URL:
+    if DATABASE_URL.startswith("postgres://"):
+        DATABASE_URL = DATABASE_URL.replace(
+            "postgres://", "postgresql://", 1
+        )
+
+    if DATABASE_URL.startswith("postgresql://"):
+        DATABASE_URL = DATABASE_URL.replace(
+            "postgresql://", "postgresql+psycopg://", 1
+        )
+
+# Local database connection for development
+else:
     DB_PASSWORD = os.getenv("DB_PASSWORD")
 
     if not DB_PASSWORD:
-        raise RuntimeError("Database credentials are missing")
+        raise RuntimeError("Database credentials missing")
 
     DATABASE_URL = (
-        f"postgresql+psycopg2://postgres:{quote_plus(DB_PASSWORD)}"
+        f"postgresql+psycopg://postgres:{quote_plus(DB_PASSWORD)}"
         "@localhost:5432/janawaaz_db"
-    )
-
-# Handle older PostgreSQL URL formats.
-if DATABASE_URL.startswith("postgres://"):
-    DATABASE_URL = DATABASE_URL.replace(
-        "postgres://", "postgresql://", 1
     )
 
 engine = create_engine(DATABASE_URL, pool_pre_ping=True)
