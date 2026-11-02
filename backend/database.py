@@ -7,22 +7,30 @@ from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-# Load environment variables from backend/.env
 load_dotenv(Path(__file__).resolve().parent / ".env")
 
-# Read database password securely
-DB_PASSWORD = os.getenv("DB_PASSWORD")
+# Use cloud database URL when deployed.
+DATABASE_URL = os.getenv("DATABASE_URL")
 
-if not DB_PASSWORD:
-    raise RuntimeError("DB_PASSWORD is missing from .env")
+# Otherwise use your existing local PostgreSQL database.
+if not DATABASE_URL:
+    DB_PASSWORD = os.getenv("DB_PASSWORD")
 
-# Create database connection
-DATABASE_URL = (
-    f"postgresql+psycopg://postgres:{quote_plus(DB_PASSWORD)}"
-    "@localhost:5432/janawaaz_db"
-)
+    if not DB_PASSWORD:
+        raise RuntimeError("Database credentials are missing")
 
-engine = create_engine(DATABASE_URL)
+    DATABASE_URL = (
+        f"postgresql+psycopg2://postgres:{quote_plus(DB_PASSWORD)}"
+        "@localhost:5432/janawaaz_db"
+    )
+
+# Handle older PostgreSQL URL formats.
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace(
+        "postgres://", "postgresql://", 1
+    )
+
+engine = create_engine(DATABASE_URL, pool_pre_ping=True)
 
 SessionLocal = sessionmaker(
     autocommit=False,
